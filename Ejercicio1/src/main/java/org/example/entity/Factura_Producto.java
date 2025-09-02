@@ -9,8 +9,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Factura_Producto {
-
     private int idProducto;
     private int idFactura;
     private int cantidad;
+
+    public Factura_Producto(int idProducto, int idFactura, int cantidad) {
+        this.idProducto = idProducto;
+        this.idFactura = idFactura;
+        this.cantidad = cantidad;
+    }
 }
