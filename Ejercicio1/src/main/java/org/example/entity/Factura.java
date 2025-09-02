@@ -9,4 +9,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Factura {
+    private int idFactura;
+    private int idCliente;
 }

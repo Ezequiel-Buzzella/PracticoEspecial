@@ -9,4 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Producto {
+    private int idProducto;
+    private String nombre;
+    private float valor;
 }
