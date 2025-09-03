@@ -1,5 +1,7 @@
 package org.example.dao;
 
-public class ClienteDAO {
+import org.example.entity.Cliente;
 
+public interface ClienteDAO extends DAO<Cliente> {
+    
 }

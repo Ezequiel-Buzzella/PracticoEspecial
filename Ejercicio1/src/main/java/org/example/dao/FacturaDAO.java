@@ -1,4 +1,6 @@
 package org.example.dao;
 
-public class FacturaDAO {
+import org.example.entity.Factura;
+
+public interface FacturaDAO extends DAO<Factura> {
 }

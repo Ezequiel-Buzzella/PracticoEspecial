@@ -1,4 +1,6 @@
 package org.example.dao;
 
-public class ProductoDAO {
+import org.example.entity.Producto;
+
+public interface ProductoDAO extends DAO<Producto> {
 }
