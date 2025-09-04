@@ -13,7 +13,7 @@ public class Factura_Producto {
     private int idFactura;
     private int cantidad;
 
-    public Factura_Producto(int idProducto, int idFactura, int cantidad) {
+    public Factura_Producto(int idFactura, int idProducto, int cantidad) {
         this.idProducto = idProducto;
         this.idFactura = idFactura;
         this.cantidad = cantidad;
