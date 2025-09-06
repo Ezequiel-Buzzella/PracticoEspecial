@@ -12,7 +12,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
     }
 
     @Override
-    public Cliente listarPorId(Integer id) {
+    public Cliente obtenerId(Integer id) {
         return null;
     }
 
@@ -22,7 +22,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
     }
 
     @Override
-    public void eliminar(Cliente cliente) {
+    public void eliminar(int id) {
 
     }
 }

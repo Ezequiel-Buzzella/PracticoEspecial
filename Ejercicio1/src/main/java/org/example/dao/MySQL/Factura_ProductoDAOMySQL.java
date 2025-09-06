@@ -12,7 +12,7 @@ public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
     }
 
     @Override
-    public Factura_Producto listarPorId(Integer id) {
+    public Factura_Producto obtenerId(Integer id) {
         return null;
     }
 
@@ -22,7 +22,7 @@ public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
     }
 
     @Override
-    public void eliminar(Factura_Producto facturaProducto) {
+    public void eliminar(int facturaProducto) {
 
     }
 }

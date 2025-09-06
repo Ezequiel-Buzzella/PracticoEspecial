@@ -4,8 +4,9 @@ import java.util.List;
 
 public interface DAO<T> {
     List<T> listarTodo();
-    T listarPorId(Integer id);
+    T obtenerId(Integer id);
     void  agregar(T t);
-    void eliminar(T t);
-
+    void eliminar(int id);
+    void createTable();
+    void update(T t);
 }
