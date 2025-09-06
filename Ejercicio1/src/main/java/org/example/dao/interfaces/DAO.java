@@ -8,6 +8,6 @@ public interface DAO<T> {
     T obtenerPorId(Integer id) throws SQLException;
     void  agregar(T t) throws SQLException;
     void eliminar(T t) throws SQLException;
-    void actualizar(T t) throws SQLException;
+    void actualizar(int id, T nuevo) throws SQLException;
 
 }

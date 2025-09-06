@@ -38,7 +38,7 @@ public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
     }
 
     @Override
-    public Factura_Producto listarPorId(Integer id) throws SQLException {
+    public Factura_Producto obtenerPorId(Integer id) throws SQLException {
         Factura_Producto resultado = null;
         String query = "SELECT * FROM Factura_Producto WHERE idFactura = ?";
         try(PreparedStatement ps = this.conexion.prepareStatement(query)) {
@@ -79,6 +79,17 @@ public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
             ps.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException("Error al eliminar un registro de Factura_Producto", e);
+        }
+    }
+
+    public void actualizar(int id, Factura_Producto nuevo) throws SQLException {
+        String update = "UPDATE Factura_Producto SET cantidad = ? WHERE idFactura = ?";
+        try(PreparedStatement ps = this.conexion.prepareStatement(update)) {
+            ps.setInt(1, nuevo.getCantidad());
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            throw new SQLException("Error al actualizar Factura_Producto", e);
         }
     }
 }
