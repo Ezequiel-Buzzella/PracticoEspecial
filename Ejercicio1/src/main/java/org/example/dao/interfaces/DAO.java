@@ -1,12 +1,13 @@
 package org.example.dao.interfaces;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DAO<T> {
-    List<T> listarTodo();
-    T obtenerId(Integer id);
-    void  agregar(T t);
-    void eliminar(int id);
-    void createTable();
-    void update(T t);
+    List<T> listarTodo() throws SQLException;
+    T obtenerPorId(Integer id) throws SQLException;
+    void  agregar(T t) throws SQLException;
+    void eliminar(T t) throws SQLException;
+    void actualizar(T t) throws SQLException;
+
 }
