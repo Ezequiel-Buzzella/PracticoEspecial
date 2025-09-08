@@ -1,11 +1,6 @@
 package factory;
 
 
-import org.example.dao.interfaces.ClienteDAO;
-import org.example.dao.interfaces.FacturaDAO;
-import org.example.dao.interfaces.Factura_ProductoDAO;
-import org.example.dao.interfaces.ProductoDAO;
-
 public abstract class DAOFactory {
 
 

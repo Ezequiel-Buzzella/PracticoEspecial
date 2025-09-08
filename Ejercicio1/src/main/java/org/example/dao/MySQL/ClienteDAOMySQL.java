@@ -1,9 +1,7 @@
 package org.example.dao.MySQL;
 
-import com.mysql.cj.xdevapi.PreparableStatement;
 import org.example.dao.interfaces.ClienteDAO;
 import org.example.entity.Cliente;
-import org.xml.sax.SAXException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,10 +14,20 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
     private Connection conexion;
 
-
     public ClienteDAOMySQL(Connection conexion) {
         this.conexion = conexion;
     }
+
+    @Override
+    public void createTable() throws SQLException {
+        String create = "CREATE TABLE IF NOT EXISTS Cliente(idCliente INT, " +
+                "nombre VARCHAR(45), " +
+                "email VARCHAR(100), " +
+                "PRIMARY KEY (idCliente))";
+        this.conexion.prepareStatement(create).executeUpdate();
+        conexion.commit();
+    }
+
     @Override
     public List<Cliente> listarTodo() throws SQLException{
         List<Cliente> lista = new ArrayList<>();
@@ -109,9 +117,9 @@ public class ClienteDAOMySQL implements ClienteDAO {
         }
     }
 
-
     @Override
-    public List<Cliente> getClientesCOnMayorFacturacion() throws SQLException {
+    public List<Cliente> getClientesConMayorFacturacion() throws SQLException {
+
 
         String query = "SELECT nombre, SUM(fp.cantidad * p.valor) as totalFacturado FROM Cliente c" +
                 "JOIN Factura f ON f.idCliente=c.idCliente" +

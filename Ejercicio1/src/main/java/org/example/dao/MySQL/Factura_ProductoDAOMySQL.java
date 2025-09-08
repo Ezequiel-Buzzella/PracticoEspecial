@@ -1,7 +1,8 @@
 package org.example.dao.MySQL;
 
-import org.example.dao.interfaces.Factura_ProductoDAO;
+import org.example.dao.interfaces.DAO;
 import org.example.entity.Factura_Producto;
+import org.example.entity.Factura_ProductoId;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +11,22 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
+public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_ProductoId> {
 
     private Connection conexion;
 
     public Factura_ProductoDAOMySQL(Connection conexion) {
         this.conexion = conexion;
+    }
+
+    @Override
+    public void createTable() throws SQLException {
+        String create = "CREATE TABLE IF NOT EXISTS Cliente(idFactura INT, " +
+                "idProducto INT, " +
+                "cantidad INT, " +
+                "PRIMARY KEY (idFactura, idProducto))";
+        this.conexion.prepareStatement(create).executeUpdate();
+        conexion.commit();
     }
 
     @Override
@@ -38,11 +49,12 @@ public class Factura_ProductoDAOMySQL implements Factura_ProductoDAO {
     }
 
     @Override
-    public Factura_Producto obtenerPorId(Integer id) throws SQLException {
+    public Factura_Producto obtenerPorId(Factura_ProductoId id) throws SQLException {
         Factura_Producto resultado = null;
-        String query = "SELECT * FROM Factura_Producto WHERE idFactura = ?";
+        String query = "SELECT * FROM Factura_Producto WHERE idFactura = ?, idProducto = ?";
         try(PreparedStatement ps = this.conexion.prepareStatement(query)) {
-            ps.setInt(1, id);
+            ps.setInt(1, id.getIdFactura());
+            ps.setInt(2, id.getIdProducto());
             try(ResultSet rs = ps.executeQuery()) {
                 if(rs.next()) {
                     resultado = new Factura_Producto(

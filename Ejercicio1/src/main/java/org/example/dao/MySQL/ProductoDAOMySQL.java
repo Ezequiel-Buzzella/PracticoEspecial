@@ -1,5 +1,6 @@
 package org.example.dao.MySQL;
 
+import org.example.dao.interfaces.DAO;
 import org.example.dao.interfaces.ProductoDAO;
 import org.example.entity.Producto;
 
@@ -16,7 +17,16 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     public ProductoDAOMySQL(Connection conn) {
         this.conn = conn;
+    }
 
+    @Override
+    public void createTable() throws SQLException {
+        String create = "CREATE TABLE IF NOT EXISTS Producto(idProducto INT, " +
+                "nombre VARCHAR(44), " +
+                "valor FLOAT, " +
+                "PRIMARY KEY (idProdutco))";
+        this.conn.prepareStatement(create).executeUpdate();
+        conn.commit();
     }
 
     @Override
@@ -124,8 +134,6 @@ public class ProductoDAOMySQL implements ProductoDAO {
         }
 
     }
-
-
 
     @Override
     public Producto productoQueMasRecaudo() throws Exception {

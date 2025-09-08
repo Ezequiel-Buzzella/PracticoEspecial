@@ -1,6 +1,6 @@
 package org.example.dao.MySQL;
 
-import org.example.dao.interfaces.FacturaDAO;
+import org.example.dao.interfaces.DAO;
 import org.example.entity.Factura;
 
 import java.sql.Connection;
@@ -10,13 +10,21 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class FacturaDAOMySQL implements FacturaDAO {
+public class FacturaDAOMySQL implements DAO<Factura, Integer> {
     private Connection conexion;
 
     public FacturaDAOMySQL(Connection conexion) {
         this.conexion = conexion;
     }
 
+    @Override
+    public void createTable() throws SQLException {
+        String create = "CREATE TABLE IF NOT EXISTS Factura(idFactura INT, " +
+                "idCliente INT, " +
+                "PRIMARY KEY (idFactura)";
+        this.conexion.prepareStatement(create).executeUpdate();
+        conexion.commit();
+    }
 
     @Override
     public List<Factura> listarTodo() throws SQLException {
