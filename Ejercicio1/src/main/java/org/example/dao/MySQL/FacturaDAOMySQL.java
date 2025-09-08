@@ -37,7 +37,7 @@ public class FacturaDAOMySQL implements FacturaDAO {
     }
 
     @Override
-    public Factura listarPorId(Integer id) throws SQLException {
+    public Factura obtenerPorId(Integer id) throws SQLException {
         Factura resultado = null;
         String query = "SELECT * FROM Factura WHERE idFactura = ?";
         try(PreparedStatement ps = this.conexion.prepareStatement(query)) {
@@ -79,6 +79,11 @@ public class FacturaDAOMySQL implements FacturaDAO {
         } catch(SQLException e) {
             throw new SQLException("Error al eliminar un registro de Factura", e);
         }
+    }
+
+    @Override
+    public void actualizar(int id, Factura nuevo) throws SQLException {
+
     }
     //falta un update?
 }

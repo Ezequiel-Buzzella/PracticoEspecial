@@ -16,7 +16,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     public ProductoDAOMySQL(Connection conn) {
         this.conn = conn;
-        createTable();
+
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
     }
 
     @Override
-    public Producto obtenerId(Integer id) {
+    public Producto obtenerPorId(Integer id) {
         String query = "SELECT * FROM Producto WHERE id = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
@@ -60,7 +60,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     }
 
-    public void update(Producto p){
+    public void actualizar(Producto p){
         String update = "UPDATE Producto SET nombre = ?, valor = ? WHERE id = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(update);
@@ -93,6 +93,15 @@ public class ProductoDAOMySQL implements ProductoDAO {
     }
 
     @Override
+    public void eliminar(Producto producto) throws SQLException {
+
+    }
+
+    @Override
+    public void actualizar(int id, Producto nuevo) throws SQLException {
+
+    }
+
     public void eliminar(int id) {
         String delete = "DELETE FROM Producto WHERE idProducto = ?";
         try {
@@ -107,22 +116,9 @@ public class ProductoDAOMySQL implements ProductoDAO {
         }
     }
 
-    @Override
-    public void createTable() {
-        String table = "CREATE TABLE IF NOT EXISTS Producto(" +
-                "idProducto INT, " +
-                "nombre VARCHAR(50), " +
-                "valor FLOAT, " +
-                "PRIMARY KEY(idProducto))";
-        try {
-            PreparedStatement ps = conn.prepareStatement(table);
-            ps.executeUpdate();
-            conn.commit();
-            ps.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
+    @Override
+    public Producto productoQueMasRecaudo() throws Exception {
+        return null;
     }
 }

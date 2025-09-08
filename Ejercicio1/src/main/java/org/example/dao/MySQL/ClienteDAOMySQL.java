@@ -42,7 +42,7 @@ public class ClienteDAOMySQL implements ClienteDAO {
     }
 
     @Override
-    public Cliente listarPorId(Integer id) throws SQLException{
+    public Cliente obtenerPorId(Integer id) throws SQLException{
         String query = "SELECT * FROM Cliente WHERE idCliente=?";
         Cliente cliente = null;
         try(PreparedStatement ps = this.conexion.prepareStatement(query);){
@@ -93,6 +93,22 @@ public class ClienteDAOMySQL implements ClienteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void actualizar(int id, Cliente nuevo) throws SQLException {
+        String query =  "UPDATE Cliente SET nombre=?, email=? WHERE idCliente=?";
+        try(PreparedStatement ps = this.conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();){
+            if(rs.next()){
+                ps.setString(1, nuevo.getNombre());
+                ps.setString(2, nuevo.getEmail());
+                ps.executeUpdate();
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public List<Cliente> getClientesCOnMayorFacturacion() throws SQLException {
