@@ -42,7 +42,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     @Override
     public Producto obtenerPorId(Integer id) {
-        String query = "SELECT * FROM Producto WHERE id = ?";
+        String query = "SELECT * FROM Producto WHERE idProducto = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -61,7 +61,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
     }
 
     public void actualizar(Producto p){
-        String update = "UPDATE Producto SET nombre = ?, valor = ? WHERE id = ?";
+        String update = "UPDATE Producto SET nombre = ?, valor = ? WHERE idProducto = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(update);
             ps.setString(1, p.getNombre());
@@ -77,7 +77,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     @Override
     public void agregar(Producto producto) {
-        String insert = "INSERT INTO Producto VALUES (?, ?, ?)";
+        String insert = "INSERT INTO Producto (idProducto,nombre, valor) VALUES (?,?, ?)";
         try {
             PreparedStatement ps = conn.prepareStatement(insert);
             ps.setInt(1, producto.getIdProducto());
@@ -94,27 +94,37 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     @Override
     public void eliminar(Producto producto) throws SQLException {
+        String query = "DELETE FROM Producto WHERE idProducto = ?";
+        try(PreparedStatement ps = conn.prepareStatement(query);){
+            ps.setInt(1, producto.getIdProducto());
+            int rowsAffected = ps.executeUpdate();
+
+            if(rowsAffected==0){
+                throw new RuntimeException();
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
     public void actualizar(int id, Producto nuevo) throws SQLException {
+        String query= "UPDATE Producto SET nombre = ?, valor = ? WHERE idProducto = ?";
+        try(PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();){
+            if(rs.next()){
+                ps.setString(1, nuevo.getNombre());
+                ps.setFloat(2, nuevo.getValor());
+                ps.executeUpdate();
 
-    }
-
-    public void eliminar(int id) {
-        String delete = "DELETE FROM Producto WHERE idProducto = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(delete);
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            ps.close();
-            conn.commit();
-            conn.close();
-        } catch (SQLException e) {
+            }
+        }catch(SQLException e){
             throw new RuntimeException(e);
         }
+
     }
+
 
 
     @Override
