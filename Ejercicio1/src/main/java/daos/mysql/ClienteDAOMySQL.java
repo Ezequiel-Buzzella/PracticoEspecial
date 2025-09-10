@@ -145,11 +145,11 @@ public class ClienteDAOMySQL implements ClienteDAO {
 
     @Override
     public List<ClienteDTO> getClientesConMayorFacturacion(){
-        String query = "SELECT nombre, SUM(fp.cantidad * p.valor) as totalFacturado FROM Cliente c" +
-                "JOIN Factura f ON f.idCliente=c.idCliente" +
-                "JOIN Factura_Producto ON fp.idFactura=f.idFactura" +
-                "JOIN Producto p ON p.idProducto=f.idProducto" +
-                "GROUP BY c.nombre" +
+        String query = "SELECT c.nombre, SUM(fp.cantidad * p.valor) as totalFacturado FROM Cliente c " +
+                "JOIN Factura f ON f.idCliente=c.idCliente " +
+                "JOIN Factura_Producto fp ON fp.idFactura = f.idFactura " +
+                "JOIN Producto p ON p.idProducto = fp.idProducto " +
+                "GROUP BY c.nombre " +
                 "ORDER BY totalFacturado DESC";
         List<ClienteDTO> clientes = new ArrayList<>();
         PreparedStatement ps = null;

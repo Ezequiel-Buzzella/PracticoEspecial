@@ -1,7 +1,9 @@
 package factory;
 
 
+import daos.interfaces.ClienteDAO;
 import daos.interfaces.DAO;
+import daos.interfaces.ProductoDAO;
 
 import java.sql.SQLException;
 
@@ -16,8 +18,8 @@ public abstract class DAOFactory {
         }
     }
 
-    public abstract DAO getProductoDAO() throws SQLException;
-    public abstract DAO getClienteDAO() throws SQLException;
+    public abstract ProductoDAO getProductoDAO() throws SQLException;
+    public abstract ClienteDAO getClienteDAO() throws SQLException;
     public abstract DAO getFacturaDAO() throws SQLException;
     public abstract DAO getFactura_ProductoDAO() throws SQLException;
 }

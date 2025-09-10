@@ -1,5 +1,7 @@
 package factory;
 
+import daos.interfaces.ClienteDAO;
+import daos.interfaces.ProductoDAO;
 import daos.mysql.ClienteDAOMySQL;
 import daos.mysql.FacturaDAOMySQL;
 import daos.mysql.Factura_ProductoDAOMySQL;
@@ -56,11 +58,11 @@ public class MysqlDAOFactory extends DAOFactory {
     }
 
     @Override
-    public DAO getClienteDAO() throws SQLException {
+    public ClienteDAO getClienteDAO() throws SQLException {
         return ClienteDAOMySQL.obtenerInstancia(this.conn);
     }
     @Override
-    public DAO getProductoDAO() throws SQLException {
+    public ProductoDAO getProductoDAO() throws SQLException {
         return ProductoDAOMySQL.obtenerInstancia(this.conn);
     }
 

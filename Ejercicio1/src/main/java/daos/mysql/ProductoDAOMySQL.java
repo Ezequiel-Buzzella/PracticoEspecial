@@ -145,12 +145,12 @@ public class ProductoDAOMySQL implements ProductoDAO {
 
     @Override
     public ProductoDTO productoQueMasRecaudo(){
-        String query = "SELECT p.nombre ,p.valor,sum(fp.cantidad= as cantidadVendida" +
-                "SUM(fp.cantidad*p.valor) as recaudacion" +
-                "FROM Producto p" +
-                "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto" +
-                "GROUP BY p.nombre p.valor" +
-                "ORDER BY recaudacion DESC" +
+        String query = "SELECT p.nombre, p.valor, sum(fp.cantidad) as cantidadVendida, " +
+                "SUM(fp.cantidad*p.valor) as recaudacion " +
+                "FROM Producto p " +
+                "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto " +
+                "GROUP BY p.nombre, p.valor " +
+                "ORDER BY recaudacion DESC " +
                 "LIMIT 1";
         PreparedStatement ps = null;
         ProductoDTO p = null;
