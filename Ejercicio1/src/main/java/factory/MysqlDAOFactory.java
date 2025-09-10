@@ -48,6 +48,7 @@ public class MysqlDAOFactory extends DAOFactory {
         Connection conexion;
         try {
              conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+            conexion.setAutoCommit(false);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

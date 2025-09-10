@@ -34,7 +34,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
         String create = "CREATE TABLE IF NOT EXISTS Producto(idProducto INT, " +
                 "nombre VARCHAR(44), " +
                 "valor FLOAT, " +
-                "PRIMARY KEY (idProdutco))";
+                "PRIMARY KEY (idProducto))";
         this.conn.prepareStatement(create).executeUpdate();
         conn.commit();
     }

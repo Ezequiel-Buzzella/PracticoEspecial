@@ -31,7 +31,7 @@ public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_P
 
     @Override
     public void createTable() throws SQLException {
-        String create = "CREATE TABLE IF NOT EXISTS Cliente(idFactura INT, " +
+        String create = "CREATE TABLE IF NOT EXISTS Factura_Producto(idFactura INT, " +
                 "idProducto INT, " +
                 "cantidad INT, " +
                 "PRIMARY KEY (idFactura, idProducto))";
