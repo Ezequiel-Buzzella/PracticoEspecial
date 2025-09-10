@@ -1,5 +1,6 @@
 package org.example.dao.MySQL;
 
+import org.example.DTO.ClienteDTO;
 import org.example.dao.interfaces.ClienteDAO;
 import org.example.entity.Cliente;
 
@@ -118,20 +119,18 @@ public class ClienteDAOMySQL implements ClienteDAO {
     }
 
     @Override
-    public List<Cliente> getClientesConMayorFacturacion() throws SQLException {
-
-
+    public List<ClienteDTO> getClientesConMayorFacturacion() throws SQLException {
         String query = "SELECT nombre, SUM(fp.cantidad * p.valor) as totalFacturado FROM Cliente c" +
                 "JOIN Factura f ON f.idCliente=c.idCliente" +
                 "JOIN Factura_Producto ON fp.idFactura=f.idFactura" +
                 "JOIN Producto p ON p.idProducto=f.idProducto" +
                 "GROUP BY c.nombre" +
                 "ORDER BY totalFacturado DESC";
-        List<Cliente> clientes = new ArrayList<>();
+        List<ClienteDTO> clientes = new ArrayList<>();
         try(PreparedStatement ps = this.conexion.prepareStatement(query);
             ResultSet rs = ps.executeQuery()){
             while (rs.next()) {
-                clientes.add(new Cliente(
+                clientes.add(new ClienteDTO(
                         rs.getString("nombre"),
                         rs.getFloat("totalFacturado")
                 ));
