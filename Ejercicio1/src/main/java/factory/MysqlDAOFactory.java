@@ -1,10 +1,10 @@
 package factory;
 
-import org.example.dao.MySQL.ClienteDAOMySQL;
-import org.example.dao.MySQL.FacturaDAOMySQL;
-import org.example.dao.MySQL.Factura_ProductoDAOMySQL;
-import org.example.dao.MySQL.ProductoDAOMySQL;
-import org.example.dao.interfaces.DAO;
+import daos.mysql.ClienteDAOMySQL;
+import daos.mysql.FacturaDAOMySQL;
+import daos.mysql.Factura_ProductoDAOMySQL;
+import daos.mysql.ProductoDAOMySQL;
+import daos.interfaces.DAO;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;

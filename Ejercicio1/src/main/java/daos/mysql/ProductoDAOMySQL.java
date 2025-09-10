@@ -1,8 +1,7 @@
-package org.example.dao.MySQL;
+package daos.mysql;
 
-import org.example.dao.interfaces.DAO;
-import org.example.dao.interfaces.ProductoDAO;
-import org.example.entity.Producto;
+import daos.interfaces.ProductoDAO;
+import entity.Producto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

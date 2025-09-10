@@ -1,7 +1,7 @@
 package factory;
 
 
-import org.example.dao.interfaces.DAO;
+import daos.interfaces.DAO;
 
 import java.sql.SQLException;
 

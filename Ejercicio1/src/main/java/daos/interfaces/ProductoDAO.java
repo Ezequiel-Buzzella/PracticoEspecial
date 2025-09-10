@@ -1,8 +1,6 @@
-package org.example.dao.interfaces;
+package daos.interfaces;
 
-import org.example.entity.Producto;
-
-import java.util.List;
+import entity.Producto;
 
 public interface ProductoDAO extends DAO<Producto, Integer> {
     Producto productoQueMasRecaudo() throws Exception;

@@ -1,8 +1,8 @@
-package org.example.dao.MySQL;
+package daos.mysql;
 
-import org.example.DTO.ClienteDTO;
-import org.example.dao.interfaces.ClienteDAO;
-import org.example.entity.Cliente;
+import dtos.ClienteDTO;
+import daos.interfaces.ClienteDAO;
+import entity.Cliente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
