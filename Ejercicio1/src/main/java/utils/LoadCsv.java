@@ -68,11 +68,11 @@ public class LoadCsv {
         List<Factura_Producto> f = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileFactura_Producto));
         for(CSVRecord row: parser) {
-            int idProducto =  Integer.parseInt(row.get("idProducto"));
             int idFactura =  Integer.parseInt(row.get("idFactura"));
+            int idProducto =  Integer.parseInt(row.get("idProducto"));
             int cantidad =  Integer.parseInt(row.get("cantidad"));
 
-            Factura_Producto producto = new Factura_Producto(idProducto, idFactura, cantidad);
+            Factura_Producto producto = new Factura_Producto(idFactura, idProducto, cantidad);
             f.add(producto);
         }
         return f;
