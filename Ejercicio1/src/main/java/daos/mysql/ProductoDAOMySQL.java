@@ -1,6 +1,7 @@
 package daos.mysql;
 
 import daos.interfaces.ProductoDAO;
+import dtos.ProductoDTO;
 import entity.Producto;
 
 import java.sql.Connection;
@@ -145,7 +146,25 @@ public class ProductoDAOMySQL implements ProductoDAO {
     }
 
     @Override
-    public Producto productoQueMasRecaudo() throws Exception {
+    public ProductoDTO productoQueMasRecaudo() throws Exception {
+        String query = "SELECT p.nombre ,p.valor,sum(fp.cantidad= as cantidadVendida" +
+                "SUM(fp.cantidad*p.valor) as recaudacion" +
+                "FROM Producto p" +
+                "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto" +
+                "GROUP BY p.nombre p.valor" +
+                "ORDER BY recaudacion DESC" +
+                "LIMIT 1";
+        try(PreparedStatement ps = conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();){
+            if(rs.next()){
+                return new ProductoDTO(
+                        rs.getString("nombre"),
+                        rs.getFloat("valor"),
+                        rs.getInt("cantidadVendida"),
+                        rs.getFloat("recaudacion")
+                );
+            }
+        }
         return null;
     }
 }
