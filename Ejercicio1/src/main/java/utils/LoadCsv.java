@@ -16,10 +16,10 @@ import java.util.List;
 
 public class LoadCsv {
 
-    private String fileCliente = "src/utils/cliente.csv";
-    private String fileProducto = "src/utils/producto.csv";
-    private String fileFactura = "src/utils/factura.csv";
-    private String fileFactura_Producto = "src/utils/factura_producto.csv";
+    private String fileCliente = "Ejercicio1/src/main/java/utils/CSV/clientes.csv";
+    private String fileProducto = "Ejercicio1/src/main/java/utils/CSV/productos.csv";
+    private String fileFactura = "Ejercicio1/src/main/java/utils/CSV/facturas.csv";
+    private String fileFactura_Producto = "Ejercicio1/src/main/java/utils/CSV/facturas-productos.csv";
 
     public LoadCsv() {}
 
@@ -27,7 +27,7 @@ public class LoadCsv {
         List<Cliente> c = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileCliente));
         for(CSVRecord row: parser) {
-            int id =  Integer.parseInt(row.get("id"));
+            int id =  Integer.parseInt(row.get("idCliente"));
             String nombre = row.get("nombre");
             String email = row.get("email");
 
@@ -41,7 +41,7 @@ public class LoadCsv {
         List<Producto> p = new ArrayList<>();
         CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileProducto));
         for(CSVRecord row: parser) {
-            int id =  Integer.parseInt(row.get("id"));
+            int id =  Integer.parseInt(row.get("idProducto"));
             String nombre = row.get("nombre");
             Float valor = Float.parseFloat(row.get("valor"));
 

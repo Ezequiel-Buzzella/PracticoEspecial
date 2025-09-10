@@ -102,7 +102,6 @@ public class ProductoDAOMySQL implements ProductoDAO {
             ps.executeUpdate();
             ps.close();
             conn.commit();
-            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
