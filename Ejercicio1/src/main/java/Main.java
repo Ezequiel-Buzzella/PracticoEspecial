@@ -23,7 +23,7 @@ public class Main {
 
         // Agregar clientes.csv a la base.
         // CSV Reader retorna una lista de clientes.
-        ArrayList<Cliente> clientes = new ArrayList<>();
+        /*ArrayList<Cliente> clientes = new ArrayList<>();
         for(Cliente c : clientes) {
             clienteDao.agregar(c);
         }
@@ -47,6 +47,6 @@ public class Main {
         ArrayList<Factura_Producto> facturas_productos = new ArrayList<>();
         for(Factura_Producto fp : facturas_productos) {
             productoDao.agregar(fp);
-        }
+        }*/
     }
 }
