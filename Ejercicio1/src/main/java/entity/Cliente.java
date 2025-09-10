@@ -4,7 +4,7 @@ package entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
+import utils.LoadCsv;
 
 
 @Getter
@@ -20,7 +20,5 @@ public class Cliente {
         this.nombre = nombre;
         this.email = email;
     }
-
-
 
 }
