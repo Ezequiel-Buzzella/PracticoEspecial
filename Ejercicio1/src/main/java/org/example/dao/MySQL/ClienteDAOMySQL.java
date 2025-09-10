@@ -13,10 +13,20 @@ import java.util.List;
 
 public class ClienteDAOMySQL implements ClienteDAO {
 
+    private static ClienteDAOMySQL instancia;
+
     private Connection conexion;
 
-    public ClienteDAOMySQL(Connection conexion) {
+    public static ClienteDAOMySQL obtenerInstancia(Connection conexion) throws SQLException {
+        if(instancia == null) {
+            instancia = new ClienteDAOMySQL(conexion);
+        }
+        return instancia;
+    }
+
+    private ClienteDAOMySQL(Connection conexion) throws SQLException {
         this.conexion = conexion;
+        this.createTable();
     }
 
     @Override

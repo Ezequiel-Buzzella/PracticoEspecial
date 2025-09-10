@@ -11,10 +11,21 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class FacturaDAOMySQL implements DAO<Factura, Integer> {
+
+    private static FacturaDAOMySQL instancia;
+
     private Connection conexion;
 
-    public FacturaDAOMySQL(Connection conexion) {
+    public static FacturaDAOMySQL obtenerInstancia(Connection conexion) throws SQLException {
+        if(instancia == null) {
+            instancia = new FacturaDAOMySQL(conexion);
+        }
+        return instancia;
+    }
+
+    private FacturaDAOMySQL(Connection conexion)  throws SQLException {
         this.conexion = conexion;
+        this.createTable();
     }
 
     @Override

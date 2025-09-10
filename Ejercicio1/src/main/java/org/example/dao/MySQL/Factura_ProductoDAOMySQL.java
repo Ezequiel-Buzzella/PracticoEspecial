@@ -13,10 +13,20 @@ import java.util.ArrayList;
 
 public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_ProductoId> {
 
+    private static Factura_ProductoDAOMySQL instancia;
+
     private Connection conexion;
 
-    public Factura_ProductoDAOMySQL(Connection conexion) {
+    public static Factura_ProductoDAOMySQL obtenerInstancia(Connection conexion) throws SQLException {
+        if(instancia == null) {
+            instancia = new Factura_ProductoDAOMySQL(conexion);
+        }
+        return instancia;
+    }
+
+    private Factura_ProductoDAOMySQL(Connection conexion) throws SQLException {
         this.conexion = conexion;
+        this.createTable();
     }
 
     @Override
