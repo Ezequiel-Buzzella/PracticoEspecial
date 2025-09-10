@@ -40,10 +40,13 @@ public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_P
     }
 
     @Override
-    public List<Factura_Producto> listarTodo() throws SQLException {
+    public List<Factura_Producto> listarTodo(){
         List<Factura_Producto> lista = new ArrayList<>();
         String query = "SELECT * FROM Factura_Producto";
-        try(PreparedStatement ps = this.conexion.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Factura_Producto facturaProducto = new Factura_Producto(
                         rs.getInt("idFactura"),
@@ -52,66 +55,90 @@ public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_P
                 );
                 lista.add(facturaProducto);
             }
-        } catch(SQLException e) {
-            throw new SQLException("Error al listar todos los registros de Factura_Producto", e);
+            ps.close();
+            rs.close();
+            return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return lista;
     }
 
     @Override
-    public Factura_Producto obtenerPorId(Factura_ProductoId id) throws SQLException {
+    public Factura_Producto obtenerPorId(Factura_ProductoId id){
         Factura_Producto resultado = null;
         String query = "SELECT * FROM Factura_Producto WHERE idFactura = ?, idProducto = ?";
-        try(PreparedStatement ps = this.conexion.prepareStatement(query)) {
+        PreparedStatement ps = null;
+        Factura_Producto fp = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
             ps.setInt(1, id.getIdFactura());
             ps.setInt(2, id.getIdProducto());
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
-                    resultado = new Factura_Producto(
-                            rs.getInt("idFactura"),
-                            rs.getInt("idProducto"),
-                            rs.getInt("cantidad")
-                    );
-                }
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                fp = new Factura_Producto(
+                        rs.getInt("idFactura"),
+                        rs.getInt("idProducto"),
+                        rs.getInt("cantidad")
+                );
             }
-        } catch(SQLException e) {
-            throw new SQLException("Error al obtener un registro de Factura_Producto por id", e);
+            rs.close();
+            ps.close();
+            return resultado;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return resultado;
     }
 
     @Override
-    public void agregar(Factura_Producto facturaProducto) throws SQLException {
+    public void agregar(Factura_Producto facturaProducto){
         String insert = "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
-        try(PreparedStatement ps = this.conexion.prepareStatement(insert)) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(insert);
             ps.setInt(1, facturaProducto.getIdFactura());
             ps.setInt(2, facturaProducto.getIdProducto());
             ps.setInt(3, facturaProducto.getCantidad());
             ps.executeUpdate();
-        } catch(SQLException e) {
-            throw new SQLException("Error al agregar un registro a Factura_Producto", e);
+            ps.close();
+            conexion.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void eliminar(Factura_Producto facturaProducto) throws SQLException {
+    public void eliminar(Factura_Producto facturaProducto){
         String delete = "DELETE FROM Factura_Producto WHERE idFactura = ?";
-        try(PreparedStatement ps = this.conexion.prepareStatement(delete)) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(delete);
             ps.setInt(1, facturaProducto.getIdFactura());
-            ps.executeUpdate();
-        } catch(SQLException e) {
-            throw new SQLException("Error al eliminar un registro de Factura_Producto", e);
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected==0){
+                throw new RuntimeException("No se encontro el producto con la id especificada...");
+            }
+            ps.close();
+            conexion.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void actualizar(int id, Factura_Producto nuevo) throws SQLException {
+    public void actualizar(int id, Factura_Producto nuevo){
         String update = "UPDATE Factura_Producto SET cantidad = ? WHERE idFactura = ?";
-        try(PreparedStatement ps = this.conexion.prepareStatement(update)) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(update);
             ps.setInt(1, nuevo.getCantidad());
             ps.setInt(2, id);
-            ps.executeUpdate();
-        } catch(SQLException e) {
-            throw new SQLException("Error al actualizar Factura_Producto", e);
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected==0){
+                throw new RuntimeException("No se encontro el producto con la id especificada...");
+            }
+            ps.close();
+            conexion.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -30,13 +30,17 @@ public class ClienteDAOMySQL implements ClienteDAO {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public void createTable(){
         String create = "CREATE TABLE IF NOT EXISTS Cliente(idCliente INT, " +
                 "nombre VARCHAR(45), " +
                 "email VARCHAR(100), " +
                 "PRIMARY KEY (idCliente))";
-        this.conexion.prepareStatement(create).executeUpdate();
-        conexion.commit();
+        try {
+            this.conexion.prepareStatement(create).executeUpdate();
+            conexion.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -54,82 +58,93 @@ public class ClienteDAOMySQL implements ClienteDAO {
                 );
                 lista.add(cliente);
             }
+            rs.close();
+            ps.close();
+            return lista;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return lista;
     }
 
     @Override
-    public Cliente obtenerPorId(Integer id) throws SQLException{
+    public Cliente obtenerPorId(Integer id){
         String query = "SELECT * FROM Cliente WHERE idCliente=?";
         Cliente cliente = null;
-        try(PreparedStatement ps = this.conexion.prepareStatement(query);){
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
             ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
-                    int idCliente = rs.getInt("idCliente");
-                    String nombre =  rs.getString("nombre");
-                    String email = rs.getString("email");
-                    Cliente c = new Cliente(idCliente, nombre, email);
-                }
-            }catch(SQLException e){
-                throw new RuntimeException(e);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                int idCliente = rs.getInt("idCliente");
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                cliente = new Cliente(idCliente, nombre, email);
             }
-
-        }catch(SQLException e){
+            rs.close();
+            ps.close();
+            return cliente;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
     @Override
-    public void agregar(Cliente cliente) throws SQLException {
+    public void agregar(Cliente cliente){
         String query =  "INSERT INTO Cliente (idCliente,nombre, email) VALUES (?,?, ?)";
-        try(PreparedStatement ps = this.conexion.prepareStatement(query);){
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
             ps.setInt(1, cliente.getIdCliente());
             ps.setString(2, cliente.getNombre());
             ps.setString(3, cliente.getEmail());
             ps.executeUpdate();
-        }catch(SQLException e){
+            ps.close();
+            conexion.commit();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     @Override
     public void eliminar(Cliente cliente) {
         String query = "DELETE FROM Cliente WHERE idCliente=?";
-        try(PreparedStatement ps = this.conexion.prepareStatement(query);){
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
             ps.setInt(1, cliente.getIdCliente());
             int rowsaffected = ps.executeUpdate();
-
             if(rowsaffected == 0){
-                throw new RuntimeException("No se pudo eliminar el cliente");
+                throw new RuntimeException("No se encontro el producto con la id especificada...");
             }
+            ps.close();
+            conexion.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void actualizar(int id, Cliente nuevo) throws SQLException {
+    public void actualizar(int id, Cliente nuevo){
         String query =  "UPDATE Cliente SET nombre=?, email=? WHERE idCliente=?";
-        try(PreparedStatement ps = this.conexion.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();){
-            if(rs.next()){
-                ps.setString(1, nuevo.getNombre());
-                ps.setString(2, nuevo.getEmail());
-                ps.executeUpdate();
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
+            ps.setString(1, nuevo.getNombre());
+            ps.setString(2, nuevo.getEmail());
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected == 0){
+                System.out.println("No se encontró un cliente con el ID: " + id);
             }
-        }catch (SQLException e){
+            ps.close();
+            conexion.commit();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<ClienteDTO> getClientesConMayorFacturacion() throws SQLException {
+    public List<ClienteDTO> getClientesConMayorFacturacion(){
         String query = "SELECT nombre, SUM(fp.cantidad * p.valor) as totalFacturado FROM Cliente c" +
                 "JOIN Factura f ON f.idCliente=c.idCliente" +
                 "JOIN Factura_Producto ON fp.idFactura=f.idFactura" +
@@ -137,16 +152,21 @@ public class ClienteDAOMySQL implements ClienteDAO {
                 "GROUP BY c.nombre" +
                 "ORDER BY totalFacturado DESC";
         List<ClienteDTO> clientes = new ArrayList<>();
-        try(PreparedStatement ps = this.conexion.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()){
+        PreparedStatement ps = null;
+        try {
+            ps = this.conexion.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 clientes.add(new ClienteDTO(
                         rs.getString("nombre"),
                         rs.getFloat("totalFacturado")
                 ));
             }
+            rs.close();
+            ps.close();
+            return clientes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return clientes;
-
     }
 }
