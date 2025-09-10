@@ -32,7 +32,10 @@ public class FacturaDAOMySQL implements DAO<Factura, Integer> {
     public void createTable() throws SQLException {
         String create = "CREATE TABLE IF NOT EXISTS Factura(idFactura INT, " +
                 "idCliente INT, " +
-                "PRIMARY KEY (idFactura))";
+                "PRIMARY KEY (idFactura)," +
+                "FOREIGN KEY (idCliente) REFERENCES Cliente(idCliente)" +
+                "ON UPDATE CASCADE " +
+                "ON DELETE RESTRICT)";
         this.conexion.prepareStatement(create).executeUpdate();
         conexion.commit();
     }

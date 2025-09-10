@@ -34,7 +34,13 @@ public class Factura_ProductoDAOMySQL implements DAO<Factura_Producto, Factura_P
         String create = "CREATE TABLE IF NOT EXISTS Factura_Producto(idFactura INT, " +
                 "idProducto INT, " +
                 "cantidad INT, " +
-                "PRIMARY KEY (idFactura, idProducto))";
+                "PRIMARY KEY (idFactura, idProducto)," +
+                "    FOREIGN KEY (idFactura) REFERENCES Factura(idFactura)" +
+                "        ON UPDATE CASCADE" +
+                "        ON DELETE CASCADE," +
+                "    FOREIGN KEY (idProducto) REFERENCES Producto(idProducto)" +
+                "        ON UPDATE CASCADE " +
+                "        ON DELETE RESTRICT)";
         this.conexion.prepareStatement(create).executeUpdate();
         conexion.commit();
     }
