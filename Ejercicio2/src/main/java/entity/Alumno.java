@@ -1,14 +1,12 @@
 package entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +14,7 @@ import java.util.Date;
 @ToString
 public class Alumno {
     @Id
-    @GeneratedValue
+    @Column(nullable = false)
     private int dni;
     @Column(nullable = false)
     private int lu;
@@ -30,6 +28,8 @@ public class Alumno {
     private char genero;
     @Column(nullable = false,length = 255)
     private String ciudadResidencia;
+    @OneToMany (mappedBy = "")
+    private List<AlumnoCarrera> carreras;
 
     public Alumno() {
 

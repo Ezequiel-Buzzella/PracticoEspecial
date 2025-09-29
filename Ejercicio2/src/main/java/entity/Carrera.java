@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,6 +17,8 @@ public class Carrera {
     private int id;
     @Column(nullable = false,length = 255)
     private String nombre;
+    @OneToMany
+    private List<AlumnoCarrera> inscriptos;
 
     public Carrera() {
 
