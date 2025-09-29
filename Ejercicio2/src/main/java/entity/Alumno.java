@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Alumno {
     private char genero;
     @Column(nullable = false,length = 255)
     private String ciudadResidencia;
-    @OneToMany (mappedBy = "")
+    @OneToMany (mappedBy = "alumno")
     private List<AlumnoCarrera> carreras;
 
     public Alumno() {
@@ -42,5 +43,6 @@ public class Alumno {
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.ciudadResidencia = ciudadResidencia;
+        this.carreras = new ArrayList<>();
     }
 }

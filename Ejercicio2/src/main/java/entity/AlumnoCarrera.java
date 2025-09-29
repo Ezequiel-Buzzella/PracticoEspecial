@@ -1,9 +1,6 @@
 package entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -15,4 +12,16 @@ public class AlumnoCarrera {
     private boolean graduado;
     @Column(nullable = false)
     private Date fechaInscripcion;
+    @ManyToOne
+    private Carrera carrera;
+    @ManyToOne
+    private Alumno alumno;
+
+    public AlumnoCarrera(IdAlumnoCarrera id, boolean graduado, Date fechaInscripcion, Carrera carrera, Alumno alumno) {
+        this.id = id;
+        this.graduado = graduado;
+        this.fechaInscripcion = fechaInscripcion;
+        this.carrera = carrera;
+        this.alumno = alumno;
+    }
 }

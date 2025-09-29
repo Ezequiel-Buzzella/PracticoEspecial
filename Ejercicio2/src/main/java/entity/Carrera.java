@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Carrera {
     private int id;
     @Column(nullable = false,length = 255)
     private String nombre;
-    @OneToMany
+    @OneToMany (mappedBy = "carrera")
     private List<AlumnoCarrera> inscriptos;
 
     public Carrera() {
@@ -25,8 +26,9 @@ public class Carrera {
     }
 
     public Carrera(int id,String nombre) {
-        this.id=id;
-        this.nombre=nombre;
+        this.id  = id;
+        this.nombre = nombre;
+        this.inscriptos = new ArrayList<>();
     }
 
 }
