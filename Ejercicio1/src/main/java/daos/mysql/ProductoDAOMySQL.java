@@ -1,8 +1,8 @@
-package org.example.dao.MySQL;
+package daos.mysql;
 
-import org.example.dao.interfaces.DAO;
-import org.example.dao.interfaces.ProductoDAO;
-import org.example.entity.Producto;
+import daos.interfaces.ProductoDAO;
+import dtos.ProductoDTO;
+import entity.Producto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +13,20 @@ import java.util.List;
 
 public class ProductoDAOMySQL implements ProductoDAO {
 
+    private static ProductoDAOMySQL instancia;
+
     private Connection conn;
 
-    public ProductoDAOMySQL(Connection conn) {
+    public static ProductoDAOMySQL obtenerInstancia(Connection conexion) throws SQLException {
+        if(instancia == null) {
+            instancia = new ProductoDAOMySQL(conexion);
+        }
+        return instancia;
+    }
+
+    private ProductoDAOMySQL(Connection conn) throws SQLException {
         this.conn = conn;
+        this.createTable();
     }
 
     @Override
@@ -24,7 +34,7 @@ public class ProductoDAOMySQL implements ProductoDAO {
         String create = "CREATE TABLE IF NOT EXISTS Producto(idProducto INT, " +
                 "nombre VARCHAR(44), " +
                 "valor FLOAT, " +
-                "PRIMARY KEY (idProdutco))";
+                "PRIMARY KEY (idProducto))";
         this.conn.prepareStatement(create).executeUpdate();
         conn.commit();
     }
@@ -39,11 +49,8 @@ public class ProductoDAOMySQL implements ProductoDAO {
             while (rs.next()) {
                 lista.add(new Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3)));
             }
-            ps.executeUpdate();
             rs.close();
             ps.close();
-            conn.commit();
-            conn.close();
             return lista;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,12 +63,9 @@ public class ProductoDAOMySQL implements ProductoDAO {
         try {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-            Producto p  =new  Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3));
-            ps.executeUpdate();
+            Producto p  = new  Producto(rs.getInt(1), rs.getString(2), rs.getFloat(3));
             rs.close();
             ps.close();
-            conn.commit();
-            conn.close();
             return p;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -76,10 +80,12 @@ public class ProductoDAOMySQL implements ProductoDAO {
             PreparedStatement ps = conn.prepareStatement(update);
             ps.setString(1, p.getNombre());
             ps.setFloat(2, p.getValor());
-            ps.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected == 0){
+                System.out.println("No se encontró un cliente con el ID: " + p.getIdProducto());
+            }
             ps.close();
             conn.commit();
-            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +102,6 @@ public class ProductoDAOMySQL implements ProductoDAO {
             ps.executeUpdate();
             ps.close();
             conn.commit();
-            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -108,10 +113,11 @@ public class ProductoDAOMySQL implements ProductoDAO {
         try(PreparedStatement ps = conn.prepareStatement(query);){
             ps.setInt(1, producto.getIdProducto());
             int rowsAffected = ps.executeUpdate();
-
             if(rowsAffected==0){
-                throw new RuntimeException();
+                throw new RuntimeException("No se encontro el producto con la id especificada...");
             }
+            ps.close();
+            conn.commit();
         }catch(SQLException e){
             throw new RuntimeException(e);
         }
@@ -119,24 +125,51 @@ public class ProductoDAOMySQL implements ProductoDAO {
     }
 
     @Override
-    public void actualizar(int id, Producto nuevo) throws SQLException {
+    public void actualizar(int id, Producto nuevo){
         String query= "UPDATE Producto SET nombre = ?, valor = ? WHERE idProducto = ?";
-        try(PreparedStatement ps = conn.prepareStatement(query);
-        ResultSet rs = ps.executeQuery();){
-            if(rs.next()){
-                ps.setString(1, nuevo.getNombre());
-                ps.setFloat(2, nuevo.getValor());
-                ps.executeUpdate();
-
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(query);
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected == 0){
+                System.out.println("No se encontró un cliente con el ID: " + id);
             }
-        }catch(SQLException e){
+            ps.setString(1, nuevo.getNombre());
+            ps.setFloat(2, nuevo.getValor());
+            ps.close();
+            conn.commit();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
-    public Producto productoQueMasRecaudo() throws Exception {
-        return null;
+    public ProductoDTO productoQueMasRecaudo(){
+        String query = "SELECT p.nombre, p.valor, sum(fp.cantidad) as cantidadVendida, " +
+                "SUM(fp.cantidad*p.valor) as recaudacion " +
+                "FROM Producto p " +
+                "JOIN Factura_Producto fp ON p.idProducto = fp.idProducto " +
+                "GROUP BY p.nombre, p.valor " +
+                "ORDER BY recaudacion DESC " +
+                "LIMIT 1";
+        PreparedStatement ps = null;
+        ProductoDTO p = null;
+        try {
+            ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                p = new ProductoDTO(
+                        rs.getString("nombre"),
+                        rs.getFloat("valor"),
+                        rs.getInt("cantidadVendida"),
+                        rs.getFloat("recaudacion")
+                );
+            }
+            ps.close();
+            conn.commit();
+            return p;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

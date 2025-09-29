@@ -1,6 +1,4 @@
-package org.example.dao.interfaces;
-
-import org.example.entity.Cliente;
+package daos.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
