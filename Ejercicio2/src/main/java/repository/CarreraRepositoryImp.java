@@ -1,10 +1,17 @@
 package repository;
 
 import entity.Carrera;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
 public class CarreraRepositoryImp implements Repository<Carrera,Integer>{
+
+    private EntityManager em;
+
+    public CarreraRepositoryImp(EntityManager em) {
+        this.em=em;
+    }
     @Override
     public Carrera getById(Integer id) {
         return null;
