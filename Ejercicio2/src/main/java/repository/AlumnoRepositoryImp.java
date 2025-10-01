@@ -22,7 +22,10 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>{
 
     @Override
     public List<Alumno> getAll() {
-        return List.of();
+        String jpql = "SELECT a FROM Alumno a";
+        Query query = em.createQuery(jpql);
+        List<Alumno> alumnos = query.getResultList();
+        return alumnos;
     }
 
     @Override
