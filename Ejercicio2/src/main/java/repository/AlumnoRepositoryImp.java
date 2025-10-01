@@ -4,6 +4,7 @@ import entity.Alumno;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 public class AlumnoRepositoryImp implements Repository<Alumno,Integer>{
@@ -15,9 +16,7 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>{
     }
     @Override
     public Alumno getById(Integer id) {
-        String jpql = "SELECT a FROM Alumno a WHERE a.id = ?";
-        Query query = em.createQuery(jpql);
-        return null;
+        return em.find(Alumno.class,id);
     }
 
     @Override
@@ -30,7 +29,6 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>{
 
     @Override
     public void save(Alumno alumno) {
-
     }
 
     @Override
