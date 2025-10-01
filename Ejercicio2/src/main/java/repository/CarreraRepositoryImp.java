@@ -14,12 +14,15 @@ public class CarreraRepositoryImp implements Repository<Carrera,Integer>{
     }
     @Override
     public Carrera getById(Integer id) {
-        return null;
+        return em.find(Carrera.class,id);
     }
 
     @Override
     public List<Carrera> getAll() {
-        return List.of();
+        String query = "select c from Carrera c";
+        em.createQuery(query).getResultList();
+        List<Carrera> carreras = em.createQuery(query).getResultList();
+        return carreras;
     }
 
     @Override
