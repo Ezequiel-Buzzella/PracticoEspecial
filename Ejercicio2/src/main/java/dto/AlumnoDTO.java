@@ -17,4 +17,11 @@ public class AlumnoDTO {
     private char genero;
     private String ciudad;
     private int lu;
+
+    public  AlumnoDTO() {
+    }
+
+    public AlumnoDTO(int dni, String nombre, String apellido, char genero, String ciudad, int lu) {
+
+    }
 }
