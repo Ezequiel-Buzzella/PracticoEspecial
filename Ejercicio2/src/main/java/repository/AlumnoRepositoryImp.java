@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRepository{
+    private EntityManager em;
+
+
     @Override
     public List<AlumnoDTO> obtenerAlumnoPorCarreraYCiudad(int idCarrera, String ciudad) {
         return List.of();
@@ -49,7 +52,6 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
 
     }
 
-    private EntityManager em;
 
     public AlumnoRepositoryImp(EntityManager em) {
         this.em = em;
@@ -68,6 +70,12 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
 
     @Override
     public void save(Alumno alumno) {
+        Alumno registro = this.getById(alumno.getDni());
+
+        if(registro==null){
+            throw new RuntimeException("Ya existe un registro con id " + alumno.getDni());
+        }
+
         em.getTransaction().begin();
         em.persist(alumno);
         em.getTransaction().commit();
