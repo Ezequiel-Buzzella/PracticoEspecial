@@ -1,5 +1,6 @@
 package dto;
 
+import entity.Alumno;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,10 +19,14 @@ public class AlumnoDTO {
     private String ciudad;
     private int lu;
 
-    public  AlumnoDTO() {
-    }
 
-    public AlumnoDTO(int dni, String nombre, String apellido, char genero, String ciudad, int lu) {
 
+    public AlumnoDTO(Alumno alumno) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.genero = genero;
+        this.ciudad = ciudad;
+        this.lu = lu;
     }
 }
