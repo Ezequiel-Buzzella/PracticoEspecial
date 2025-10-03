@@ -61,6 +61,12 @@ public class AlumnoCarreraRepositoryImp implements Repository<AlumnoCarrera, IdA
 
     @Override
     public void save(AlumnoCarrera alumnoCarrera) {
+
+        AlumnoCarrera registro = this.getById(alumnoCarrera.getId());
+        if(registro != null) {
+            throw new RuntimeException("Ya existe un registro con id " + alumnoCarrera.getId() + " cargado en la base de datos");
+        }
+
         em.getTransaction().begin();
         em.persist(alumnoCarrera);
         em.getTransaction().commit();
