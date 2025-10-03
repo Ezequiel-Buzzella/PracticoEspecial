@@ -23,11 +23,13 @@ public class AlumnoCarrera {
     @ManyToOne
     private Alumno alumno;
 
-    public AlumnoCarrera(IdAlumnoCarrera id, boolean graduado, Date fechaInscripcion, Carrera carrera, Alumno alumno) {
-        this.id = id;
+    public AlumnoCarrera(Alumno a, Carrera c, boolean graduado, Date fechaInscripcion) {
+        this.alumno = a;
+        this.carrera = c;
         this.graduado = graduado;
         this.fechaInscripcion = fechaInscripcion;
-        this.carrera = carrera;
-        this.alumno = alumno;
+        int idCarrera = carrera.getId();
+        int idAlumno = alumno.getDni();
+        this.id = new IdAlumnoCarrera(idAlumno, idCarrera);
     }
 }

@@ -2,6 +2,8 @@ package repository;
 
 import dto.AlumnoDTO;
 import entity.Alumno;
+import entity.AlumnoCarrera;
+import entity.Carrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -9,14 +11,71 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRepository{
+
+    private static AlumnoRepositoryImp instance;
     private EntityManager em;
 
+    public static AlumnoRepositoryImp getInstance(EntityManager em) {
+        if (instance == null) {
+            instance = new AlumnoRepositoryImp(em);
+        }
+        return instance;
+    }
+
+    private AlumnoRepositoryImp(EntityManager em) {
+        this.em = em;
+    }
+
+    @Override
+    public Alumno getById(Integer id) {
+        return em.find(Alumno.class,id);
+    }
+
+    @Override
+    public List<Alumno> getAll() {
+        String jpql = "SELECT a FROM Alumno a";
+        TypedQuery<Alumno> query = em.createQuery(jpql,Alumno.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public void save(Alumno alumno) {
+        Alumno registro = this.getById(alumno.getDni());
+
+        if(registro != null){
+            throw new RuntimeException("Ya existe un registro con id " + alumno.getDni());
+        }
+
+        em.getTransaction().begin();
+        em.persist(alumno);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void delete(Integer id) {
+
+        Alumno registro = this.getById(id);
+
+        if (registro == null) {
+            throw new EntityNotFoundException("Alumno con el id " +  id + " no encontrado");
+        }
+
+        em.getTransaction().begin();
+        em.remove(registro);
+        em.getTransaction().commit();
+    }
+
+    @Override
+    public void update(Integer id, Alumno nuevo) {
+
+    }
 
     @Override
     public List<AlumnoDTO> obtenerAlumnoPorCarreraYCiudad(int idCarrera, String ciudad) {
-        return List.of();
+        return null;
     }
 
     @Override
@@ -44,60 +103,14 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
 
     @Override
     public List<AlumnoDTO> obtenerAlumnoPorCarrera(int id) {
-        return List.of();
+        return null;
     }
 
     @Override
-    public void matricularAlumnoACarrera(int id, int dni, int carreraId, int inscripcion, int graduacion, int antiguedad) {
-
-    }
-
-
-    public AlumnoRepositoryImp(EntityManager em) {
-        this.em = em;
-    }
-    @Override
-    public Alumno getById(Integer id) {
-        return em.find(Alumno.class,id);
-    }
-
-    @Override
-    public List<Alumno> getAll() {
-        String jpql = "SELECT a FROM Alumno a";
-        TypedQuery<Alumno> query = em.createQuery(jpql,Alumno.class);
-        return query.getResultList();
-    }
-
-    @Override
-    public void save(Alumno alumno) {
-        Alumno registro = this.getById(alumno.getDni());
-
-        if(registro==null){
-            throw new RuntimeException("Ya existe un registro con id " + alumno.getDni());
-        }
-
-        em.getTransaction().begin();
-        em.persist(alumno);
-        em.getTransaction().commit();
-    }
-
-    @Override
-    public void delete(Integer id) {
-
-        Alumno existe = this.getById(id);
-
-        if (existe != null) {
-            throw new EntityNotFoundException("Alumno con el id " +  id + " no encontrado");
-        }
-
-        em.getTransaction().begin();
-
-        em.remove(existe);
-        em.getTransaction().commit();
-    }
-
-    @Override
-    public void update(Integer id, Alumno nuevo) {
-
+    public void matricularAlumnoACarrera(int dni, int idCarrera, Date inscripcion, boolean graduado) {
+        Alumno a = this.getById(dni);
+        Carrera c = CarreraRepositoryImp.getInstance(this.em).getById(idCarrera);
+        AlumnoCarrera ac = new AlumnoCarrera(a, c, graduado, inscripcion);
+        AlumnoCarreraRepositoryImp.getInstance(this.em).save(ac);
     }
 }
