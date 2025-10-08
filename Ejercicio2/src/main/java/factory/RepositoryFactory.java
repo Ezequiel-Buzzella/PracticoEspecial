@@ -7,10 +7,7 @@ import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import repository.AlumnoRepositoryImp;
-import repository.CarreraRepositoryImp;
-import repository.AlumnoCarreraRepositoryImp;
-import repository.Repository;
+import repository.*;
 
 public class RepositoryFactory {
 
@@ -29,17 +26,20 @@ public class RepositoryFactory {
     private RepositoryFactory() {
         this.emf = Persistence.createEntityManagerFactory("MySQLPersistence");
         this.em = emf.createEntityManager();
+        this.getAlumnoRepository();
+        this.getCarreraRepository();
+        this.getAlumnoCarreraRepository();
     }
 
-    public Repository<Carrera, Integer> getCarreraRepository() {
+    public CarreraRepository getCarreraRepository() {
         return CarreraRepositoryImp.getInstance(this.em);
     }
 
-    public Repository<Alumno, Integer> getAlumnoRepository() {
+    public AlumnoRepository getAlumnoRepository() {
         return AlumnoRepositoryImp.getInstance(this.em);
     }
 
-    public Repository<AlumnoCarrera, IdAlumnoCarrera> getAlumnoCarreraRepository() {
+    public AlumnoCarreraRepository getAlumnoCarreraRepository() {
         return AlumnoCarreraRepositoryImp.getInstance(this.em);
     }
 }

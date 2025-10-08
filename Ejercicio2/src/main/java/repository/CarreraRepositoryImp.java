@@ -8,7 +8,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarreraRepositoryImp implements Repository<Carrera,Integer>{
+public class CarreraRepositoryImp implements Repository<Carrera,Integer>, CarreraRepository{
 
     private EntityManager em;
     private static CarreraRepositoryImp instance;
@@ -83,5 +83,12 @@ public class CarreraRepositoryImp implements Repository<Carrera,Integer>{
             carreras.add(new CarreraDTO(carrera));
         }
         return carreras;
+    }
+
+    @Override
+    public List<Carrera> getCarrerasOrderByNombre() {
+        String jpql = "SELECT c FROM Carrera c ORDER BY c.nombre ASC";
+        TypedQuery<Carrera> query = em.createQuery(jpql, Carrera.class);
+        return query.getResultList();
     }
 }

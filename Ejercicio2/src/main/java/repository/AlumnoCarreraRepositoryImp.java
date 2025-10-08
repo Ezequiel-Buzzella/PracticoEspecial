@@ -1,13 +1,15 @@
 package repository;
 
+import dto.AlumnoDTO;
 import entity.AlumnoCarrera;
 import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class AlumnoCarreraRepositoryImp implements Repository<AlumnoCarrera, IdAlumnoCarrera>{
+public class AlumnoCarreraRepositoryImp implements Repository<AlumnoCarrera, IdAlumnoCarrera>, AlumnoCarreraRepository{
 
     private static AlumnoCarreraRepositoryImp instance;
     private EntityManager em;
@@ -97,5 +99,27 @@ public class AlumnoCarreraRepositoryImp implements Repository<AlumnoCarrera, IdA
         registro.setFechaInscripcion(nuevo.getFechaInscripcion());
         registro.setGraduado(nuevo.isGraduado());
         em.getTransaction().commit();
+    }
+
+    @Override
+    public List<AlumnoDTO> getInscriptos(int idCarrera) {
+        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.fechaNacimiento, a.genero, a.ciudadResidencia, a.lu) " +
+                "FROM AlumnoCarrera ac JOIN ac.alumno a " +
+                "WHERE ac.carrera.id = :idCarrera AND ac.graduado = false " +
+                "ORDER BY ac.fechaInscripcion ASC";
+        TypedQuery<AlumnoDTO> query = em.createQuery(jpql, AlumnoDTO.class);
+        query.setParameter("idCarrera", idCarrera);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<AlumnoDTO> getGraduados(int idCarrera) {
+        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.fechaNacimiento, a.genero, a.ciudadResidencia, a.lu) " +
+                "FROM AlumnoCarrera ac JOIN ac.alumno a " +
+                "WHERE ac.carrera.id = :idCarrera AND ac.graduado = true " +
+                "ORDER BY ac.fechaInscripcion ASC";
+        TypedQuery<AlumnoDTO> query = em.createQuery(jpql, AlumnoDTO.class);
+        query.setParameter("idCarrera", idCarrera);
+        return query.getResultList();
     }
 }
