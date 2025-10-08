@@ -83,7 +83,7 @@ public class CarreraRepositoryImp implements CarreraRepository {
         TypedQuery<Carrera> query = em.createQuery(jpql, Carrera.class);
         List<Carrera> list = query.getResultList();
         for (Carrera carrera : list) {
-            carreras.add(new CarreraDTO(carrera));
+            carreras.add(new CarreraDTO(carrera.getNombre(),carrera.getDuracion(),carrera.getInscriptos().size()));
         }
         return carreras;
     }

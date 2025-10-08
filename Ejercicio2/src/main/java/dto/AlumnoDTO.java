@@ -29,12 +29,7 @@ public class AlumnoDTO {
         this.lu = lu;
     }
 
-    public AlumnoDTO(Alumno alumno) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.genero = genero;
-        this.ciudad = ciudad;
-        this.lu = lu;
+    public AlumnoDTO() {
+
     }
 }

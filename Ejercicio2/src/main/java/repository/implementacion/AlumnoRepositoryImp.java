@@ -8,12 +8,9 @@ import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import org.hibernate.query.NativeQuery;
 import repository.interfaces.AlumnoRepository;
 
-import java.lang.annotation.Native;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -36,24 +33,7 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
 
     @Override
     public Alumno getById(Integer id) {
-        // Consulta nativa
-        String sql = "SELECT * FROM Alumno WHERE dni = :dni";
-
-        // Se crea la consulta indicando la clase de resultado
-        Query query = em.createNativeQuery(sql, Alumno.class);
-
-        // Se setea el parámetro
-        query.setParameter("dni", id);
-
-        // Se obtiene el resultado
-        List<Alumno> resultados = query.getResultList();
-
-        if (resultados.isEmpty()) {
-            return null; // no se encontró
-        }
-
-        return resultados.get(0); // devuelve el primer resultado
-
+        return em.find(Alumno.class,id);
     }
 
     @Override
@@ -97,7 +77,17 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
 
     @Override
     public List<AlumnoDTO> getAlumnoByCarreraAndCiudad(int idCarrera, String ciudad) {
-        return null;
+        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.edad, a.genero, a.ciudadResidencia, a.lu) " +
+                "FROM AlumnoCarrera ac " +
+                "JOIN ac.alumno a " +
+                "JOIN ac.carrera c " +
+                "WHERE c.id = :idCarrera AND a.ciudadResidencia = :ciudad";
+
+        TypedQuery<AlumnoDTO> query = em.createQuery(jpql, AlumnoDTO.class);
+        query.setParameter("idCarrera", idCarrera);
+        query.setParameter("ciudad", ciudad);
+
+        return query.getResultList();
     }
 
     @Override
@@ -106,18 +96,18 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
         TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
         query.setParameter("lu",lu);
         Alumno a = query.getSingleResult();
-        return new AlumnoDTO(a);
+        return new AlumnoDTO(a.getDni(),a.getNombre(),a.getApellido(),a.getEdad(),a.getGenero(),a.getCiudadResidencia(),lu);
     }
 
     @Override
-    public List<AlumnoDTO> getAlumnoByGenero(char genero) {
+    public List<AlumnoDTO> getAlumnoByGenero(String genero) {
         String jpql = "SELECT a FROM Alumno a WHERE a.genero = :genero";
         TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
         query.setParameter("genero",genero);
         List<Alumno> alumnosGenero = query.getResultList();
         List<AlumnoDTO> alumnosDTO = new ArrayList<>();
         for(Alumno a:alumnosGenero){
-            alumnosDTO.add(new AlumnoDTO(a));
+            alumnosDTO.add(new AlumnoDTO(a.getDni(),a.getNombre(),a.getApellido(),a.getEdad(),genero,a.getCiudadResidencia(),a.getLu()));
 
         }
         return alumnosDTO;
@@ -135,7 +125,7 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
         query.setParameter("ciudad",ciudad);
         List<Alumno> alumnosCarrera = query.getResultList();
         for(Alumno a:alumnosCarrera){
-            alumnosDTO.add(new AlumnoDTO(a));
+            alumnosDTO.add(new AlumnoDTO(id,a.getNombre(),a.getApellido(),a.getEdad(),a.getGenero(),ciudad,a.getLu()));
         }
         return alumnosDTO;
     }

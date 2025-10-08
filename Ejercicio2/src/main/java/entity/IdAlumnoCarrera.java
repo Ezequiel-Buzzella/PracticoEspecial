@@ -13,6 +13,10 @@ public class IdAlumnoCarrera  {
     private int dni;
     private int id;
 
+    public IdAlumnoCarrera(){
+
+    }
+
     public IdAlumnoCarrera(int dni, int id) {
         this.dni = dni;
         this.id = id;

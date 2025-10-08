@@ -13,9 +13,13 @@ public class CarreraDTO {
     private int duracion;
     private int cantInscriptos;
 
-    public CarreraDTO(Carrera carrera) {
+    public CarreraDTO(String nombre, int duracion, int cantInscriptos) {
         this.nombre = nombre;
         this.duracion = duracion;
         this.cantInscriptos = cantInscriptos;
+    }
+
+    public CarreraDTO() {
+
     }
 }
