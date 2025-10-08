@@ -43,7 +43,7 @@ public class CarreraRepositoryImp implements CarreraRepository {
     @Override
     public void save(Carrera carrera) {
         Carrera registro = this.getById(carrera.getId());
-        if(registro==null){
+        if(registro!=null){
             throw new RuntimeException("Ya existe un registro con id " + carrera.getId());
         }
 

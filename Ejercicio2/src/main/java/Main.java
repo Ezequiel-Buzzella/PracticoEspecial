@@ -3,6 +3,13 @@ import entity.Alumno;
 import entity.AlumnoCarrera;
 import entity.Carrera;
 import factory.RepositoryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import repository.implementacion.AlumnoCarreraRepositoryImp;
+import repository.implementacion.AlumnoRepositoryImp;
+import repository.implementacion.CarreraRepositoryImp;
+import repository.interfaces.AlumnoRepository;
 import utils.LoadCSV;
 
 import java.io.IOException;
@@ -13,21 +20,21 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // Creación de los Repository
         RepositoryFactory rf = RepositoryFactory.getInstance();
-
         LoadCSV loadCSV = new LoadCSV();
 
-        List<Alumno> alumnos = loadCSV.LoadAlumnos();
+        /*List<Alumno> alumnos = loadCSV.LoadAlumnos();
         List<Carrera> carreras = loadCSV.LoadCarrera();
-        List<AlumnoCarrera> AlumnosCarrera = loadCSV.LoadAlumnoCarrera(rf);
+
 
         for(Alumno a:alumnos){
-            rf.getAlumnoRepository().save(a);
+            ar.save(a);
         }
 
         for(Carrera c:carreras){
-            rf.getCarreraRepository().save(c);
-        }
+            cr.save(c);
+        }*/
 
+        List<AlumnoCarrera> AlumnosCarrera = loadCSV.LoadAlumnoCarrera(rf);
         for(AlumnoCarrera ac:AlumnosCarrera){
             rf.getAlumnoCarreraRepository().save(ac);
         }

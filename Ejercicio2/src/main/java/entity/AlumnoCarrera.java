@@ -22,9 +22,11 @@ public class AlumnoCarrera {
     private int antiguedad;
     @ManyToOne
     @MapsId("id")
+    @JoinColumn(name="id")
     private Carrera carrera;
     @ManyToOne
     @MapsId("dni")
+    @JoinColumn(name="dni")
     private Alumno alumno;
 
     public AlumnoCarrera(IdAlumnoCarrera id, Alumno a, Carrera c, int graduado, int inscripcion, int antiguedad) {

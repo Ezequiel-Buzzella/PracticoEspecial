@@ -14,7 +14,6 @@ import java.util.List;
 @ToString
 public class Carrera {
     @Id
-    @GeneratedValue
     private int id;
     @Column(nullable = false,length = 255)
     private String nombre;

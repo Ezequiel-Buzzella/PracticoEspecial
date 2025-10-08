@@ -8,9 +8,12 @@ import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.query.NativeQuery;
 import repository.interfaces.AlumnoRepository;
 
+import java.lang.annotation.Native;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -33,7 +36,24 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
 
     @Override
     public Alumno getById(Integer id) {
-        return em.find(Alumno.class,id);
+        // Consulta nativa
+        String sql = "SELECT * FROM Alumno WHERE dni = :dni";
+
+        // Se crea la consulta indicando la clase de resultado
+        Query query = em.createNativeQuery(sql, Alumno.class);
+
+        // Se setea el parámetro
+        query.setParameter("dni", id);
+
+        // Se obtiene el resultado
+        List<Alumno> resultados = query.getResultList();
+
+        if (resultados.isEmpty()) {
+            return null; // no se encontró
+        }
+
+        return resultados.get(0); // devuelve el primer resultado
+
     }
 
     @Override

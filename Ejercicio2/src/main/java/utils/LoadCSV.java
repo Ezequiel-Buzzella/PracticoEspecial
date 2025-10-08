@@ -5,11 +5,13 @@ import entity.AlumnoCarrera;
 import entity.Carrera;
 import entity.IdAlumnoCarrera;
 import factory.RepositoryFactory;
+import jakarta.persistence.EntityManager;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import repository.implementacion.AlumnoRepositoryImp;
 import repository.implementacion.CarreraRepositoryImp;
+import repository.interfaces.AlumnoRepository;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -65,14 +67,14 @@ public class LoadCSV {
             //int id = Integer.parseInt(row.get("id_carrera"));
             int id_alumno = Integer.parseInt(row.get("id_estudiante"));
             int id_carrera = Integer.parseInt(row.get("id_carrera"));
-            int inscripcion = Integer.parseInt(row.get("inscripcion"));
             int graduacion = Integer.parseInt(row.get("graduacion"));
+            int inscripcion = Integer.parseInt(row.get("inscripcion"));
             int antiguedad = Integer.parseInt(row.get("antiguedad"));
-
+            //Alumno a = em.getReference(Alumno.class, id_alumno);
             Alumno a = rf.getAlumnoRepository().getById(id_alumno);
             Carrera c =rf.getCarreraRepository().getById(id_carrera);
             IdAlumnoCarrera IdAC = new IdAlumnoCarrera(a.getDni(), c.getId());
-            AlumnoCarrera salida = new AlumnoCarrera(IdAC, a, c, inscripcion, graduacion, antiguedad);
+            AlumnoCarrera salida = new AlumnoCarrera(IdAC, a, c, graduacion, inscripcion, antiguedad);
             ac.add(salida);
         }
         return ac;

@@ -42,6 +42,7 @@ public class Alumno {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
+        this.genero=genero;
         this.ciudadResidencia = ciudadResidencia;
         this.carreras = new ArrayList<>();
     }
