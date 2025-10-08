@@ -38,6 +38,7 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
 
     @Override
     public List<Alumno> getAll() {
+
         String jpql = "SELECT a FROM Alumno a";
         TypedQuery<Alumno> query = em.createQuery(jpql,Alumno.class);
         return query.getResultList();

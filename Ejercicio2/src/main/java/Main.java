@@ -48,8 +48,8 @@ public class Main {
 
         //rf.getAlumnoRepository().matricularAlumnoACarrera(7777777,2,2024,0,1);
 
-        //Servicio 3:Recuperar todos los alumnos(arreglar)
-        System.out.println(rf.getAlumnoRepository().getAll());
+        //Servicio 3:Recuperar todos los alumnos
+        //System.out.println(rf.getAlumnoRepository().getAll());
 
         //Servicio 4 :
         //System.out.println(rf.getAlumnoRepository().getAlumnoByLibreta(55555));

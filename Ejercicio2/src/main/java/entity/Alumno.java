@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
+
 public class Alumno {
     @Id
     @Column(nullable = false)
@@ -45,5 +45,18 @@ public class Alumno {
         this.genero=genero;
         this.ciudadResidencia = ciudadResidencia;
         this.carreras = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Alumno{" +
+                "dni=" + dni +
+                ", lu=" + lu +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", edad=" + edad +
+                ", genero='" + genero + '\'' +
+                ", ciudadResidencia='" + ciudadResidencia + '\'' +
+                '}';
     }
 }
