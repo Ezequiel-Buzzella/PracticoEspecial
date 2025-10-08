@@ -14,16 +14,16 @@ public class AlumnoDTO {
     private int dni;
     private String nombre;
     private String apellido;
-    private Date fechanacimiento;
-    private char genero;
+    private int edad;
+    private String genero;
     private String ciudad;
     private int lu;
 
-    public AlumnoDTO(int dni, String nombre, String apellido, Date fechanacimiento, char genero, String ciudad, int lu) {
+    public AlumnoDTO(int dni, String nombre, String apellido, int edad, String genero, String ciudad, int lu) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.fechanacimiento = fechanacimiento;
+        this.edad = edad;
         this.genero = genero;
         this.ciudad = ciudad;
         this.lu = lu;

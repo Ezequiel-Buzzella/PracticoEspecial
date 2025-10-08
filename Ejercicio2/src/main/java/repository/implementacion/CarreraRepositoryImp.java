@@ -72,6 +72,7 @@ public class CarreraRepositoryImp implements CarreraRepository {
         em.getTransaction().begin();
         registro.setNombre(nuevo.getNombre());
         registro.setInscriptos(nuevo.getInscriptos());
+        registro.setDuracion(nuevo.getDuracion());
         em.getTransaction().commit();
     }
 

@@ -12,24 +12,34 @@ import java.util.Date;
 @Setter
 @ToString
 public class AlumnoCarrera {
-    @Id
+    @EmbeddedId
     private IdAlumnoCarrera id;
     @Column(nullable = false)
-    private boolean graduado;
+    private int graduado;
     @Column(nullable = false)
-    private Date fechaInscripcion;
+    private int inscripcion;
+    @Column(nullable = false)
+    private int antiguedad;
     @ManyToOne
+    @MapsId("id")
     private Carrera carrera;
     @ManyToOne
+    @MapsId("dni")
     private Alumno alumno;
 
-    public AlumnoCarrera(Alumno a, Carrera c, boolean graduado, Date fechaInscripcion) {
+    public AlumnoCarrera(IdAlumnoCarrera id, Alumno a, Carrera c, int graduado, int inscripcion, int antiguedad) {
+        this.id = id;
         this.alumno = a;
         this.carrera = c;
         this.graduado = graduado;
-        this.fechaInscripcion = fechaInscripcion;
+        this.inscripcion = inscripcion;
+        this.antiguedad = antiguedad;
         int idCarrera = carrera.getId();
         int idAlumno = alumno.getDni();
         this.id = new IdAlumnoCarrera(idAlumno, idCarrera);
+    }
+
+    public AlumnoCarrera() {
+
     }
 }

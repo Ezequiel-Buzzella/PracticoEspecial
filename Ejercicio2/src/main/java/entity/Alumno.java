@@ -24,9 +24,9 @@ public class Alumno {
     @Column(nullable = false,length = 255)
     private String apellido;
     @Column(nullable = false)
-    private Date fechaNacimiento;
+    private int edad;
     @Column(nullable = false)
-    private char genero;
+    private String genero;
     @Column(nullable = false,length = 255)
     private String ciudadResidencia;
     @OneToMany (mappedBy = "alumno")
@@ -36,12 +36,12 @@ public class Alumno {
 
     }
 
-    public Alumno(int dni,int lu,String nombre,String apellido,Date fechaNacimiento,String ciudadResidencia) {
+    public Alumno(int dni,int lu,String nombre,String apellido,int edad,String genero,String ciudadResidencia) {
         this.dni = dni;
         this.lu = lu;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.fechaNacimiento = fechaNacimiento;
+        this.edad = edad;
         this.ciudadResidencia = ciudadResidencia;
         this.carreras = new ArrayList<>();
     }

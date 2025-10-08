@@ -10,5 +10,5 @@ public interface AlumnoRepository extends Repository<Alumno,Integer> {
     AlumnoDTO getAlumnoByLibreta(int lu);
     List<AlumnoDTO> getAlumnoByGenero(char genero);
     List<AlumnoDTO> getAlumnoByCarrera(int id, String ciudad);
-    void matricularAlumnoACarrera(int dni, int carreraId, Date inscripcion, boolean graduacion);
+    void matricularAlumnoACarrera(int dni, int carreraId, int inscripcion, int graduacion, int antiguedad);
 }

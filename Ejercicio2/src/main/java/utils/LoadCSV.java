@@ -3,9 +3,13 @@ package utils;
 import entity.Alumno;
 import entity.AlumnoCarrera;
 import entity.Carrera;
+import entity.IdAlumnoCarrera;
+import factory.RepositoryFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import repository.implementacion.AlumnoRepositoryImp;
+import repository.implementacion.CarreraRepositoryImp;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,9 +19,9 @@ import java.util.List;
 
 public class LoadCSV {
 
-    String fileCarrera = "";
-    String fileEstudianteCarrera = "";
-    String fileEstudiantes = "";
+    String fileCarrera = "Ejercicio2/src/main/java/utils/CSV/carreras.csv";
+    String fileEstudianteCarrera = "Ejercicio2/src/main/java/utils/CSV/estudianteCarrera.csv";
+    String fileEstudiantes = "Ejercicio2/src/main/java/utils/CSV/estudiantes.csv";
 
     public LoadCSV(){}
 
@@ -36,41 +40,42 @@ public class LoadCSV {
         return carreras;
     }
 
-    public List<AlumnoCarrera> LoadAlumnoCarrera() throws IOException {
-        List<AlumnoCarrera> ac = new ArrayList<>();
-        CSVParser csvParser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileEstudianteCarrera));
-        for(CSVRecord row: csvParser) {
-            int id = Integer.parseInt(row.get("id_carrera"));
-            int id_alumno = Integer.parseInt(row.get("id_estudiante"));
-            int id_carrera = Integer.parseInt(row.get("id_carrera"));
-            int inscripcion = Integer.parseInt(row.get("inscripcion"));
-            int graduacion = Integer.parseInt(row.get("graduacion"));
-            int antiguedad = Integer.parseInt(row.get("antiguedad"));
-            //corrregir constructor alumnoCarrera...
-            AlumnoCarrera salida = new AlumnoCarrera(/*atributos del csv*/);
-
-            ac.add(salida);
-        }
-        return ac;
-    }
-
     public List<Alumno> LoadAlumnos() throws IOException {
         List<Alumno> alumnos = new ArrayList<>();
         CSVParser csvParser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileEstudiantes));
         for(CSVRecord row: csvParser) {
             int dni = Integer.parseInt(row.get("DNI"));
+            int lu = Integer.parseInt(row.get("LU"));
             String nombre = row.get("nombre");
             String apellido = row.get("apellido");
             int edad = Integer.parseInt(row.get("edad"));
             String genero = row.get("genero");
             String ciudad = row.get("ciudad");
-            int lu = Integer.parseInt(row.get("LU"));
             //corrregir constructor alumno...
-            Alumno a = new Alumno();
-
+            Alumno a = new Alumno(dni, lu, nombre, apellido, edad, genero, ciudad);
             alumnos.add(a);
         }
         return alumnos;
+    }
+
+    public List<AlumnoCarrera> LoadAlumnoCarrera(RepositoryFactory rf) throws IOException {
+        List<AlumnoCarrera> ac = new ArrayList<>();
+        CSVParser csvParser = CSVFormat.DEFAULT.withHeader().parse(new FileReader(fileEstudianteCarrera));
+        for(CSVRecord row: csvParser) {
+            //int id = Integer.parseInt(row.get("id_carrera"));
+            int id_alumno = Integer.parseInt(row.get("id_estudiante"));
+            int id_carrera = Integer.parseInt(row.get("id_carrera"));
+            int inscripcion = Integer.parseInt(row.get("inscripcion"));
+            int graduacion = Integer.parseInt(row.get("graduacion"));
+            int antiguedad = Integer.parseInt(row.get("antiguedad"));
+
+            Alumno a = rf.getAlumnoRepository().getById(id_alumno);
+            Carrera c =rf.getCarreraRepository().getById(id_carrera);
+            IdAlumnoCarrera IdAC = new IdAlumnoCarrera(a.getDni(), c.getId());
+            AlumnoCarrera salida = new AlumnoCarrera(IdAC, a, c, inscripcion, graduacion, antiguedad);
+            ac.add(salida);
+        }
+        return ac;
     }
 
 }

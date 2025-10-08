@@ -31,36 +31,10 @@ public class AlumnoCarreraRepositoryImp implements AlumnoCarreraRepository {
         return em.find(AlumnoCarrera.class, id);
     }
 
-    /* GetById con DTO
-    @Override
-    public AlumnoCarreraDTO getById(IdAlumnoCarrera id) {
-        return em.createQuery(
-                        "SELECT new AlumnoCarreraDTO(a.nombre, c.nombre, ac.fechaInscripcion) " +
-                                "FROM AlumnoCarrera ac " +
-                                "JOIN ac.alumno a " +
-                                "JOIN ac.carrera c " +
-                                "WHERE ac.id = :id", AlumnoCarreraDTO.class)
-                .setParameter("id", id)
-                .getSingleResult();
-    }
-    */
-
     @Override
     public List<AlumnoCarrera> getAll() {
         return em.createQuery("SELECT ac FROM AlumnoCarrera ac", AlumnoCarrera.class).getResultList();
     }
-
-    /* GetAll con DTO
-    @Override
-    public List<AlumnoCarreraDTO> getAll() {
-        return em.createQuery(
-                        "SELECT new AlumnoCarreraDTO(a.nombre, c.nombre, ac.fechaInscripcion) " +
-                                "FROM AlumnoCarrera ac " +
-                                "JOIN ac.alumno a " +
-                                "JOIN ac.carrera c", AlumnoCarreraDTO.class)
-                .getResultList();
-    }
-    */
 
     @Override
     public void save(AlumnoCarrera alumnoCarrera) {
@@ -97,17 +71,17 @@ public class AlumnoCarreraRepositoryImp implements AlumnoCarreraRepository {
         }
 
         em.getTransaction().begin();
-        registro.setFechaInscripcion(nuevo.getFechaInscripcion());
-        registro.setGraduado(nuevo.isGraduado());
+        registro.setInscripcion(nuevo.getInscripcion());
+        registro.setGraduado(nuevo.getGraduado());
         em.getTransaction().commit();
     }
 
     @Override
     public List<AlumnoDTO> getInscriptos(int idCarrera) {
-        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.fechaNacimiento, a.genero, a.ciudadResidencia, a.lu) " +
+        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.edad, a.genero, a.ciudadResidencia, a.lu) " +
                 "FROM AlumnoCarrera ac JOIN ac.alumno a " +
-                "WHERE ac.carrera.id = :idCarrera AND ac.graduado = false " +
-                "ORDER BY ac.fechaInscripcion ASC";
+                "WHERE ac.carrera.id = :idCarrera AND ac.graduado = 0 " +
+                "ORDER BY ac.inscripcion ASC";
         TypedQuery<AlumnoDTO> query = em.createQuery(jpql, AlumnoDTO.class);
         query.setParameter("idCarrera", idCarrera);
         return query.getResultList();
@@ -115,10 +89,10 @@ public class AlumnoCarreraRepositoryImp implements AlumnoCarreraRepository {
 
     @Override
     public List<AlumnoDTO> getGraduados(int idCarrera) {
-        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.fechaNacimiento, a.genero, a.ciudadResidencia, a.lu) " +
+        String jpql = "SELECT new dto.AlumnoDTO(a.dni, a.nombre, a.apellido, a.edad, a.genero, a.ciudadResidencia, a.lu) " +
                 "FROM AlumnoCarrera ac JOIN ac.alumno a " +
-                "WHERE ac.carrera.id = :idCarrera AND ac.graduado = true " +
-                "ORDER BY ac.fechaInscripcion ASC";
+                "WHERE ac.carrera.id = :idCarrera AND ac.graduado != 0 " +
+                "ORDER BY ac.inscripcion ASC";
         TypedQuery<AlumnoDTO> query = em.createQuery(jpql, AlumnoDTO.class);
         query.setParameter("idCarrera", idCarrera);
         return query.getResultList();

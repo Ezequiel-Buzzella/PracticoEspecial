@@ -4,6 +4,7 @@ import dto.AlumnoDTO;
 import entity.Alumno;
 import entity.AlumnoCarrera;
 import entity.Carrera;
+import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -105,8 +106,8 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
     @Override
     public List<AlumnoDTO> getAlumnoByCarrera(int id, String ciudad) {
         String jpql = "SELECT a FROM Alumno a " +
-                "JOIN AlumnoCarrera ac ON a.dni = ac.idAlumno " +
-                "JOIN Carrera c ON ac.idCarrera = c.id " +
+                "JOIN AlumnoCarrera ac ON a.dni = ac.alumno.dni " +
+                "JOIN Carrera c ON ac.carrera.id = c.id " +
                 "WHERE c.id = :id AND a.ciudadResidencia = :ciudad";
         List<AlumnoDTO> alumnosDTO = new ArrayList<>();
         TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
@@ -120,10 +121,11 @@ public class AlumnoRepositoryImp implements AlumnoRepository {
     }
 
     @Override
-    public void matricularAlumnoACarrera(int dni, int idCarrera, Date inscripcion, boolean graduado) {
+    public void matricularAlumnoACarrera(int dni, int idCarrera, int inscripcion, int graduado, int antiguedad) {
         Alumno a = this.getById(dni);
         Carrera c = CarreraRepositoryImp.getInstance(this.em).getById(idCarrera);
-        AlumnoCarrera ac = new AlumnoCarrera(a, c, graduado, inscripcion);
+        IdAlumnoCarrera IdAC = new IdAlumnoCarrera(a.getDni(), c.getId());
+        AlumnoCarrera ac = new AlumnoCarrera(IdAC, a, c, graduado, inscripcion, antiguedad);
         AlumnoCarreraRepositoryImp.getInstance(this.em).save(ac);
     }
 }
