@@ -1,4 +1,4 @@
-package repository;
+package repository.implementacion;
 
 import dto.AlumnoDTO;
 import entity.AlumnoCarrera;
@@ -6,10 +6,11 @@ import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
+import repository.interfaces.AlumnoCarreraRepository;
 
 import java.util.List;
 
-public class AlumnoCarreraRepositoryImp implements Repository<AlumnoCarrera, IdAlumnoCarrera>, AlumnoCarreraRepository{
+public class AlumnoCarreraRepositoryImp implements AlumnoCarreraRepository {
 
     private static AlumnoCarreraRepositoryImp instance;
     private EntityManager em;

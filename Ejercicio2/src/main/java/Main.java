@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         // Creación de los Repository
         RepositoryFactory rf = RepositoryFactory.getInstance();
-        
+
         // Servicio del punto 3: Reporte ---------------------------------------------------
         List<Carrera> carreras = rf.getCarreraRepository().getCarrerasOrderByNombre();
         List<ReporteCarreraDTO> reporteCarreras = new ArrayList<>();

@@ -1,4 +1,4 @@
-package repository;
+package repository.implementacion;
 
 import dto.AlumnoDTO;
 import entity.Alumno;
@@ -8,12 +8,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
 import jakarta.persistence.TypedQuery;
+import repository.interfaces.AlumnoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRepository{
+public class AlumnoRepositoryImp implements AlumnoRepository {
 
     private static AlumnoRepositoryImp instance;
     private EntityManager em;
@@ -74,12 +75,12 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
     }
 
     @Override
-    public List<AlumnoDTO> obtenerAlumnoPorCarreraYCiudad(int idCarrera, String ciudad) {
+    public List<AlumnoDTO> getAlumnoByCarreraAndCiudad(int idCarrera, String ciudad) {
         return null;
     }
 
     @Override
-    public AlumnoDTO obtenerAlumnoPorLibreta(int lu) {
+    public AlumnoDTO getAlumnoByLibreta(int lu) {
         String jpql = "SELECT a FROM Alumno a WHERE a.lu = :lu";
         TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
         query.setParameter("lu",lu);
@@ -88,7 +89,7 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
     }
 
     @Override
-    public List<AlumnoDTO> obtenerAlumnoPorGenero(char genero) {
+    public List<AlumnoDTO> getAlumnoByGenero(char genero) {
         String jpql = "SELECT a FROM Alumno a WHERE a.genero = :genero";
         TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
         query.setParameter("genero",genero);
@@ -102,7 +103,7 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
     }
 
     @Override
-    public List<AlumnoDTO> obtenerAlumnoPorCarrera(int id, String ciudad) {
+    public List<AlumnoDTO> getAlumnoByCarrera(int id, String ciudad) {
         String jpql = "SELECT a FROM Alumno a " +
                 "JOIN AlumnoCarrera ac ON a.dni = ac.idAlumno " +
                 "JOIN Carrera c ON ac.idCarrera = c.id " +

@@ -1,14 +1,15 @@
-package repository;
+package repository.implementacion;
 
 import dto.CarreraDTO;
 import entity.Carrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import repository.interfaces.CarreraRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarreraRepositoryImp implements Repository<Carrera,Integer>, CarreraRepository{
+public class CarreraRepositoryImp implements CarreraRepository {
 
     private EntityManager em;
     private static CarreraRepositoryImp instance;
@@ -74,7 +75,8 @@ public class CarreraRepositoryImp implements Repository<Carrera,Integer>, Carrer
         em.getTransaction().commit();
     }
 
-    public List<CarreraDTO> obtenerCarreraPorCantAlumnos(){
+    @Override
+    public List<CarreraDTO> getCarreraOrderByCantAlumnos(){
         List<CarreraDTO> carreras = new ArrayList<>();
         String jpql = "SELECT c FROM Carrera c WHERE SIZE(c.inscriptos) > 0 ORDER BY SIZE(c.inscriptos) DESC";
         TypedQuery<Carrera> query = em.createQuery(jpql, Carrera.class);

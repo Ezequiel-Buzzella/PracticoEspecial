@@ -1,13 +1,14 @@
 package factory;
 
-import entity.Alumno;
-import entity.AlumnoCarrera;
-import entity.Carrera;
-import entity.IdAlumnoCarrera;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import repository.*;
+import repository.implementacion.AlumnoCarreraRepositoryImp;
+import repository.implementacion.AlumnoRepositoryImp;
+import repository.implementacion.CarreraRepositoryImp;
+import repository.interfaces.AlumnoCarreraRepository;
+import repository.interfaces.AlumnoRepository;
+import repository.interfaces.CarreraRepository;
 
 public class RepositoryFactory {
 
