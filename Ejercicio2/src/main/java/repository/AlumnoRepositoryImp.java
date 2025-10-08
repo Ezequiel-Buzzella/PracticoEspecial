@@ -102,8 +102,20 @@ public class AlumnoRepositoryImp implements Repository<Alumno,Integer>,AlumnoRep
     }
 
     @Override
-    public List<AlumnoDTO> obtenerAlumnoPorCarrera(int id) {
-        return null;
+    public List<AlumnoDTO> obtenerAlumnoPorCarrera(int id, String ciudad) {
+        String jpql = "SELECT a FROM Alumno a " +
+                "JOIN AlumnoCarrera ac ON a.dni = ac.idAlumno " +
+                "JOIN Carrera c ON ac.idCarrera = c.id " +
+                "WHERE c.id = :id AND a.ciudadResidencia = :ciudad";
+        List<AlumnoDTO> alumnosDTO = new ArrayList<>();
+        TypedQuery<Alumno> query = em.createQuery(jpql, Alumno.class);
+        query.setParameter("id",id);
+        query.setParameter("ciudad",ciudad);
+        List<Alumno> alumnosCarrera = query.getResultList();
+        for(Alumno a:alumnosCarrera){
+            alumnosDTO.add(new AlumnoDTO(a));
+        }
+        return alumnosDTO;
     }
 
     @Override

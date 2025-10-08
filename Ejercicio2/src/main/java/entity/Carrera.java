@@ -21,9 +21,7 @@ public class Carrera {
     @OneToMany (mappedBy = "carrera")
     private List<AlumnoCarrera> inscriptos;
 
-    public Carrera() {
 
-    }
 
     public Carrera(int id,String nombre) {
         this.id  = id;
