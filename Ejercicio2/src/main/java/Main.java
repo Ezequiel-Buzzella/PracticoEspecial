@@ -20,11 +20,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // Creación de los Repository
         RepositoryFactory rf = RepositoryFactory.getInstance();
-        /*LoadCSV loadCSV = new LoadCSV();
+
+        /*
+        LoadCSV loadCSV = new LoadCSV();
 
         List<Alumno> alumnos = loadCSV.LoadAlumnos();
         List<Carrera> carreras = loadCSV.LoadCarrera();
-
 
         for(Alumno a:alumnos){
            rf.getAlumnoRepository().save(a);
@@ -37,39 +38,47 @@ public class Main {
         List<AlumnoCarrera> AlumnosCarrera = loadCSV.LoadAlumnoCarrera(rf);
         for(AlumnoCarrera ac:AlumnosCarrera){
             rf.getAlumnoCarreraRepository().save(ac);
-        }*/
+        }
+        */
 
-        //Servicio 1 : Dar de alta un estudaimte
+        // Servicio 1 : Dar de alta un estudiante
+        /*
+        Alumno a = new Alumno(7777777,55555,"Jose","Jose",23,"Masculino","tandil");
+        rf.getAlumnoRepository().save(a);
+        */
 
-        //Alumno a = new Alumno(7777777,55555,"Jose","Jose",23,"Masculino","tandil");
-        //rf.getAlumnoRepository().save(a);
+        // Servicio 2 : Matricular un estudiante
+        /*
+        rf.getAlumnoRepository().matricularAlumnoACarrera(7777777,2,2024,0,1);
+        */
 
-        //Servicio 2 : Matricular un estudiante
+        // Servicio 3:Recuperar todos los alumnos ordenados
+        /*
+        System.out.println(rf.getAlumnoRepository().getAll());
+        */
 
-        //rf.getAlumnoRepository().matricularAlumnoACarrera(7777777,2,2024,0,1);
+        // Servicio 4 : Obtener un alumno por libreta universitaria
+        /*
+        System.out.println(rf.getAlumnoRepository().getAlumnoByLibreta(55555));
+        */
 
-        //Servicio 3:Recuperar todos los alumnos
-        //System.out.println(rf.getAlumnoRepository().getAll());
+        // Servicio 5: Obtener alumnos por genero
+        /*
+        System.out.println(rf.getAlumnoRepository().getAlumnoByGenero("Male"));
+        */
 
-        //Servicio 4 :
-        //System.out.println(rf.getAlumnoRepository().getAlumnoByLibreta(55555));
+        // Servicio 6: Obtener carreras ordenada por cantidad de alumnos
+        /*
+        System.out.println(rf.getCarreraRepository().getCarreraOrderByCantAlumnos());
+        */
+        // Servicio 7: Obtener alumno por carrera y ciudad
+        /*
+        System.out.println(rf.getAlumnoRepository().getAlumnoByCarreraAndCiudad(2,"tandil"));
+        */
 
-        //Servicio 5:
-
-            //System.out.println(rf.getAlumnoRepository().getAlumnoByGenero("Male"));
-
-        //Servicio 6: Obtener carreras ordenada por cantidad de alumnos
-
-        //System.out.println(rf.getCarreraRepository().getCarreraOrderByCantAlumnos());
-
-        //Servicio 7: Obtener alumno por carrera y ciudad
-
-        //System.out.println(rf.getAlumnoRepository().getAlumnoByCarreraAndCiudad(2,"tandil"));
-
-
-
-        /* //Servicio del punto 3: Reporte ---------------------------------------------------
-       List<Carrera> carreras = rf.getCarreraRepository().getCarrerasOrderByNombre();
+        //Servicio 8: Reporte
+        /*
+        List<Carrera> carreras = rf.getCarreraRepository().getCarrerasOrderByNombre();
         List<ReporteCarreraDTO> reporteCarreras = new ArrayList<>();
         for(Carrera c : carreras) {
             ReporteCarreraDTO reporteCarrera = new ReporteCarreraDTO(
@@ -81,6 +90,7 @@ public class Main {
         System.out.println("--- REPORTE DE CARRERAS ---");
         for (ReporteCarreraDTO rc : reporteCarreras) {
             System.out.println(rc);
-        }*/
+        }
+        */
     }
 }
